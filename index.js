@@ -10,6 +10,7 @@ const SignatureValidationFailed = require('@line/bot-sdk').SignatureValidationFa
 const {
     addUser,
     deleteUser,
+    logEvents,
 } = require('./app/webhook/controller');
 
 const app = express();
@@ -53,9 +54,11 @@ app.post('/webhook', (req, res) => {
     console.log(req.body.events)
     const events = req.body.events;
     const userId = events[0].source.userId;
-    if (events[0].type === 'follow') {
+    const type = events[0].type;
+    logEvents(userId, events, type)
+    if (type === 'follow') {
         addUser(userId)
-    } else if (events[0].type === 'unfollow') {
+    } else if (type === 'unfollow') {
         deleteUser(userId)
     }
     res.json(req.body.events)

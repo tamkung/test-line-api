@@ -66,3 +66,17 @@ exports.deleteUser = (userId) => {
         console.log(error);
     }
 }
+
+exports.logEvents = (userId, events, type) => {
+    try {
+        connection.query('INSERT INTO log_events (user_id, events, type) VALUES (?, ?, ?)', [userId, JSON.stringify(events), type], (error, results) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Log Events Success.');
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
